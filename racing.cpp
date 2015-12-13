@@ -74,5 +74,34 @@ int main()
 		}
 	}
 
+	// start longest path algo here
+	stack<int> Stack;
+	vector<int> dist(N + 1, INT_MIN);
+	vector<bool> visited(N + 1, false);
+
+	dist[0] = 0; /* dist to source vertex is 0 */
+
+	for (int i = 0; i <= N; i++) {
+		if (visited[i] == false)
+			topo_sort(i, visited, Stack, graph);
+	}
+
+	while (Stack.empty() == false) {
+		int u = Stack.top();
+		Stack.pop();
+
+		if (dist[u] != INT_MIN) {
+			for (auto i = graph[u].begin(); i != graph[u].end();
+			     ++i) {
+				dist[i->to] = max(dist[i->to],
+						  (dist[u] + i->length));
+			}
+		}
+	}
+
+	auto ans = *max_element(dist.begin(), dist.end());
+
+	cout << ans << endl;
+
 	return 0;
 }

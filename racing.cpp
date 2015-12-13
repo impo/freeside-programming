@@ -1,4 +1,6 @@
 #include <iostream>
+#include <stack>
+#include <list>
 #include <string>
 #include <utility>
 #include <limits>
@@ -29,6 +31,19 @@ ld dist(gem A, gem B)
 	return sqrt(pow(delta_x, 2) + pow(delta_y, 2));
 }
 
+void topo_sort(int v, vector<bool> visited, stack<int> &Stack,
+		vector< vector<edge> > &Graph)
+{
+	visited[v] = true;
+
+	for (auto i = Graph[v].begin(); i != Graph[v].end(); ++i) {
+		if (!visited[i->to])
+			topo_sort(i->to, visited, Stack, Graph);
+	}
+
+	Stack.push(v);
+}
+
 int main()
 {
 	ld N, R, W, H; /* gems, ratio, width, height */
@@ -45,6 +60,19 @@ int main()
 	}
 
 	vector< vector<edge> > graph(N, vector<edge>());
+
+	for (int i = 0; i <= N; i++) {
+		for (int j = 0; j <= N; j++) {
+			// there exists an edge from gems[i] to gems[j]
+			if ((gems[j].second > gems[i].second) &&
+			    (dist(gems[j], gems[i]) >= -R) &&
+			    (dist(gems[j], gems[i]) <= R)) {
+				edge z;
+				z.to = j;
+				graph[i].push_back(z);
+			}
+		}
+	}
 
 	return 0;
 }

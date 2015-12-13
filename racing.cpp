@@ -1,21 +1,14 @@
 #include <iostream>
 #include <stack>
-#include <list>
-#include <string>
 #include <utility>
-#include <limits>
 #include <vector>
 #include <cmath>
-#include <set>
-#include <queue>
 #include <algorithm>
 
-#define INT_MAX std::numeric_limits<int>::max()
 #define INT_MIN std::numeric_limits<int>::min()
 
 using namespace std;
 
-typedef unsigned long long ull;
 typedef long double ld;
 typedef pair<ld, ld> gem;
 
@@ -23,15 +16,6 @@ struct edge {
 	int length = 1;
 	int to;
 };
-
-void print_graph(vector< vector<edge> > &graph, int nodes)
-{
-	for (int i = 0; i < nodes; i++) {
-		for (auto j = graph[i].begin(); j != graph[i].end(); ++j) {
-			cout << "EDGE: (" << i << ", " << j->to << ")" << endl;
-		}
-	}
-}
 
 ld slope(gem A, gem B)
 {

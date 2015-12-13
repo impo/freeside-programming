@@ -56,6 +56,18 @@ void topo_sort(int v, vector<bool> &visited, stack<int> &Stack,
 	cout << "EXITING TOPOSORT" << endl;
 }
 
+vector<gem> construct_gems(int N, ld h_start)
+{
+	vector<gem> gems(N + 1);
+	gems[0] = make_pair(h_start, 0.0);
+
+	for (int i = 1; i <= N; i++) {
+		gem a;
+		cin >> a.first >> a.second;
+		gems[i] = a;
+	}
+	return gems;
+}
 
 int main()
 {

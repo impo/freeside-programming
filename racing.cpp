@@ -56,6 +56,7 @@ void topo_sort(int v, vector<bool> &visited, stack<int> &Stack,
 	cout << "EXITING TOPOSORT" << endl;
 }
 
+
 int main()
 {
 	ld N, R, W, H; /* gems, ratio, width, height */

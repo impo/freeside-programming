@@ -24,7 +24,7 @@ struct edge {
 	int to;
 };
 
-void print_graph(vector< vector<edge> > graph, int nodes)
+void print_graph(vector< vector<edge> > &graph, int nodes)
 {
 	for (int i = 0; i < nodes; i++) {
 		for (auto j = graph[i].begin(); j != graph[i].end(); ++j) {
@@ -113,9 +113,9 @@ int longest_path(int N, vector< vector<edge> > &graph)
 	return ans;
 }
 
-int solve(ld N, ld R, ld W, ld H, ld h_start)
+int solve(ld N, ld R, ld W, ld H, ld h_start, vector<gem> &gems)
 {
-	auto gems = construct_gems(N, 0.0);
+	gems[0].first = h_start;
 	auto graph = construct_graph(N, R, gems);
 	auto ans = longest_path(N, graph);
 	return ans;
@@ -126,7 +126,15 @@ int main()
 	ld N, R, W, H; /* gems, ratio, width, height */
 	cin >> N >> R >> W >> H;
 
-	cout << solve(N, R, W, H, 0.0) << endl;
+	auto gems = construct_gems(N, 0.0);
+
+	int max_ans = 0;
+
+	for (ld i = 0; i <= W; ++i) {
+		max_ans = max(max_ans, solve(N, R, W, H, i, gems));
+	}
+
+	cout << max_ans << endl;
 
 	return 0;
 }

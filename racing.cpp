@@ -24,16 +24,26 @@ struct edge {
 	int to;
 };
 
-ld dist(gem A, gem B)
+void print_graph(vector< vector<edge> > graph, int nodes)
+{
+	for (int i = 0; i < nodes; i++) {
+		for (auto j = graph[i].begin(); j != graph[i].end(); ++j) {
+			cout << "EDGE: (" << i << ", " << j->to << ")" << endl;
+		}
+	}
+}
+
+ld slope(gem A, gem B)
 {
 	auto delta_x = B.first - A.first;
 	auto delta_y = B.second - A.second;
-	return sqrt(pow(delta_x, 2) + pow(delta_y, 2));
+	return delta_y / delta_x;
 }
 
-void topo_sort(int v, vector<bool> visited, stack<int> &Stack,
+void topo_sort(int v, vector<bool> &visited, stack<int> &Stack,
 		vector< vector<edge> > &Graph)
 {
+	cout << "ENTERING TOPOSORT OVER " << v << endl;
 	visited[v] = true;
 
 	for (auto i = Graph[v].begin(); i != Graph[v].end(); ++i) {
@@ -42,6 +52,8 @@ void topo_sort(int v, vector<bool> visited, stack<int> &Stack,
 	}
 
 	Stack.push(v);
+	cout << "PUSHING: " << v << endl;
+	cout << "EXITING TOPOSORT" << endl;
 }
 
 int main()
@@ -59,14 +71,13 @@ int main()
 		gems[i] = a;
 	}
 
-	vector< vector<edge> > graph(N, vector<edge>());
+	vector< vector<edge> > graph(N + 1, vector<edge>());
 
 	for (int i = 0; i <= N; i++) {
 		for (int j = 0; j <= N; j++) {
 			// there exists an edge from gems[i] to gems[j]
-			if ((gems[j].second > gems[i].second) &&
-			    (dist(gems[j], gems[i]) >= -R) &&
-			    (dist(gems[j], gems[i]) <= R)) {
+			if (gems[j].second > gems[i].second &&
+			   abs(slope(gems[j], gems[i])) >= R) {
 				edge z;
 				z.to = j;
 				graph[i].push_back(z);
@@ -74,12 +85,14 @@ int main()
 		}
 	}
 
+	print_graph(graph, N + 1);
+
 	// start longest path algo here
 	stack<int> Stack;
 	vector<int> dist(N + 1, INT_MIN);
 	vector<bool> visited(N + 1, false);
 
-	dist[0] = 0; /* dist to source vertex is 0 */
+	dist[0] = 0; // dist to source vertex is 0
 
 	for (int i = 0; i <= N; i++) {
 		if (visited[i] == false)

@@ -43,7 +43,6 @@ ld slope(gem A, gem B)
 void topo_sort(int v, vector<bool> &visited, stack<int> &Stack,
 		vector< vector<edge> > &Graph)
 {
-	cout << "ENTERING TOPOSORT OVER " << v << endl;
 	visited[v] = true;
 
 	for (auto i = Graph[v].begin(); i != Graph[v].end(); ++i) {
@@ -52,8 +51,6 @@ void topo_sort(int v, vector<bool> &visited, stack<int> &Stack,
 	}
 
 	Stack.push(v);
-	cout << "PUSHING: " << v << endl;
-	cout << "EXITING TOPOSORT" << endl;
 }
 
 vector<gem> construct_gems(int N, ld h_start)
@@ -116,45 +113,20 @@ int longest_path(int N, vector< vector<edge> > &graph)
 	return ans;
 }
 
+int solve(ld N, ld R, ld W, ld H, ld h_start)
+{
+	auto gems = construct_gems(N, 0.0);
+	auto graph = construct_graph(N, R, gems);
+	auto ans = longest_path(N, graph);
+	return ans;
+}
+
 int main()
 {
 	ld N, R, W, H; /* gems, ratio, width, height */
 	cin >> N >> R >> W >> H;
 
-	auto gems = construct_gems(N, 0.0);
-
-	auto graph = construct_graph(N, R, gems);
-
-	print_graph(graph, N + 1);
-
-	// start longest path algo here
-	stack<int> Stack;
-	vector<int> dist(N + 1, INT_MIN);
-	vector<bool> visited(N + 1, false);
-
-	dist[0] = 0; // dist to source vertex is 0
-
-	for (int i = 0; i <= N; i++) {
-		if (visited[i] == false)
-			topo_sort(i, visited, Stack, graph);
-	}
-
-	while (Stack.empty() == false) {
-		int u = Stack.top();
-		Stack.pop();
-
-		if (dist[u] != INT_MIN) {
-			for (auto i = graph[u].begin(); i != graph[u].end();
-			     ++i) {
-				dist[i->to] = max(dist[i->to],
-						  (dist[u] + i->length));
-			}
-		}
-	}
-
-	auto ans = *max_element(dist.begin(), dist.end());
-
-	cout << ans << endl;
+	cout << solve(N, R, W, H, 0.0) << endl;
 
 	return 0;
 }

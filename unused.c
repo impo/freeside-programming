@@ -7,10 +7,13 @@
 #define NUM_LETTERS 26
 
 int main() {
-    int N;
+    int N; /* number of cases */
     int i, j, k;
 
+    /* stores the case-by-case string */
     char *input = (char *)calloc(MAX_INPUT, sizeof(char));
+
+    /* stores the number of times each character has occurred in input */
     int *occurrences = (int *)calloc(NUM_LETTERS, sizeof(int));
 
     scanf("%d\n", &N);
